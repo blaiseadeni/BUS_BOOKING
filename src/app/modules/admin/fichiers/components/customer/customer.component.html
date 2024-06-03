@@ -1,0 +1,71 @@
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <button pButton pRipple type="button" (click)="openNew()" icon="pi pi-plus" label="Add Customer" class="p-button-primary mb-3"></button>
+
+    <p-table [value]="customers" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Phone Number</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-customer let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ customer.name }}</td>
+          <td>{{ customer.email }}</td>
+          <td>{{ customer.address }}</td>
+          <td>{{ customer.phoneNumber }}</td>
+          <td>
+            <div class="flex">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="editCustomer(customer, rowIndex)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteCustomer(customer)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="formDialog" [style]="{width: '450px'}" header="Customer Details" [modal]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="customerForm">
+          <div class="field">
+            <label for="name">Name <span class="p-error">*</span></label>
+            <input id="name" type="text" pInputText formControlName="name" />
+            <small class="p-error" *ngIf="customerForm.controls['name'].invalid && customerForm.controls['name'].touched">
+              Name is required.
+            </small>
+          </div>
+          <div class="field">
+            <label for="email">Email <span class="p-error">*</span></label>
+            <input id="email" type="email" pInputText formControlName="email" />
+            <small class="p-error" *ngIf="customerForm.controls['email'].invalid && customerForm.controls['email'].touched">
+              Valid email is required.
+            </small>
+          </div>
+          <div class="field">
+            <label for="address">Address <span class="p-error">*</span></label>
+            <input id="address" type="text" pInputText formControlName="address" />
+            <small class="p-error" *ngIf="customerForm.controls['address'].invalid && customerForm.controls['address'].touched">
+              Address is required.
+            </small>
+          </div>
+          <div class="field">
+            <label for="phoneNumber">Phone Number <span class="p-error">*</span></label>
+            <input id="phoneNumber" type="text" pInputText formControlName="phoneNumber" />
+            <small class="p-error" *ngIf="customerForm.controls['phoneNumber'].invalid && customerForm.controls['phoneNumber'].touched">
+              Valid phone number is required.
+            </small>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple type="button" label="Save" icon="pi pi-check" class="p-button-primary" (click)="saveCustomer()"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <button pButton pRipple type="button" (click)="openFormDialog()" icon="pi pi-plus" label="Add Route" class="p-button-primary mb-3"></button>
+
+    <p-table [value]="routes" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Agency</th>
+          <th>Origin Terminal</th>
+          <th>Destination Terminal</th>
+          <th>Amount</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-route let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ route.agencyId }}</td>
+          <td>{{ route.originTerminalId }}</td>
+          <td>{{ route.destinationTerminalId }}</td>
+          <td>{{ route.amount | currency }}</td>
+          <td>
+            <div class="flex">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="editRoute(route)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteRoute(route)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="formDialog" [style]="{width: '450px'}" header="Route Details" [modal]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="routeForm">
+          <div class="field">
+            <label for="agencyId">Agency <span class="p-error">*</span></label>
+            <p-dropdown [options]="agencies" formControlName="agencyId" optionLabel="label" optionValue="value"></p-dropdown>
+            <small class="p-error" *ngIf="routeForm.controls['agencyId'].dirty && routeForm.controls['agencyId'].hasError('required')">Agency is required.</small>
+          </div>
+          <div class="field">
+            <label for="originTerminalId">Origin Terminal <span class="p-error">*</span></label>
+            <p-dropdown [options]="terminals" formControlName="originTerminalId" optionLabel="label" optionValue="value"></p-dropdown>
+            <small class="p-error" *ngIf="routeForm.controls['originTerminalId'].dirty && routeForm.controls['originTerminalId'].hasError('required')">Origin Terminal is required.</small>
+          </div>
+          <div class="field">
+            <label for="destinationTerminalId">Destination Terminal <span class="p-error">*</span></label>
+            <p-dropdown [options]="terminals" formControlName="destinationTerminalId" appendTo="body" optionLabel="label" optionValue="value"></p-dropdown>
+            <small class="p-error" *ngIf="routeForm.controls['destinationTerminalId'].dirty && routeForm.controls['destinationTerminalId'].hasError('required')">Destination Terminal is required.</small>
+          </div>
+          <div class="field">
+            <label for="amount">Amount <span class="p-error">*</span></label>
+            <input id="amount" type="number" pInputText formControlName="amount" />
+            <small class="p-error" *ngIf="routeForm.controls['amount'].dirty && routeForm.controls['amount'].hasError('required')">Amount is required.</small>
+            <small class="p-error" *ngIf="routeForm.controls['amount'].dirty && routeForm.controls['amount'].hasError('min')">Amount cannot be negative.</small>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideFormDialog()"></button>
+        <button pButton pRipple type="button" label="Save" icon="pi pi-check" class="p-button-primary" (click)="saveRoute()"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>

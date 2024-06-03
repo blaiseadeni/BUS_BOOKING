@@ -1,0 +1,50 @@
+<!-- account.component.html -->
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <button pButton pRipple type="button" (click)="openFormDialog()" icon="pi pi-plus" label="Add Account" class="p-button-primary mb-3"></button>
+
+    <p-table [value]="accounts" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Account Name</th>
+          <th>Account Type</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-account let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ account.accountName }}</td>
+          <td>{{ account.accountType }}</td>
+          <td>
+            <div class="flex">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="editAccount(account, rowIndex)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteAccount(rowIndex)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="formDialog" [style]="{width: '450px'}" header="Account Details" [modal]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="accountForm">
+          <div class="field">
+            <label for="accountName">Account Name <span class="p-error">*</span></label>
+            <input id="accountName" type="text" pInputText formControlName="accountName" />
+            <small class="p-error" *ngIf="accountForm.controls['accountName'].dirty && accountForm.controls['accountName'].hasError('required')">Account Name is required.</small>
+          </div>
+          <div class="field">
+            <label for="accountType">Account Type <span class="p-error">*</span></label>
+            <input id="accountType" type="text" pInputText formControlName="accountType" />
+            <small class="p-error" *ngIf="accountForm.controls['accountType'].dirty && accountForm.controls['accountType'].hasError('required')">Account Type is required.</small>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideFormDialog()"></button>
+        <button pButton pRipple type="button" label="Save" icon="pi pi-check" class="p-button-primary" (click)="saveAccount()"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>

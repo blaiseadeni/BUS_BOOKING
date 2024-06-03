@@ -1,0 +1,119 @@
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <button pButton pRipple type="button" (click)="openFormDialog()" icon="pi pi-plus" label="Add Company" class="p-button-primary mb-3"></button>
+
+    <p-table [value]="companies" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Creation Date</th>
+          <th>Registration Number</th>
+          <th>National ID</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>City</th>
+          <th>Address</th>
+          <th>Social Security Number</th>
+          <th>Pension Fund Number</th>
+          <th>Tax Number</th>
+          <th>Image</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-company let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ rowIndex+1 }}</td>
+          <td>{{ company.name }}</td>
+          <td>{{ company.creationDate | date:'shortDate' }}</td>
+          <td>{{ company.registrationNumber }}</td>
+          <td>{{ company.nationalId }}</td>
+          <td>{{ company.phone }}</td>
+          <td>{{ company.email }}</td>
+          <td>{{ company.city }}</td>
+          <td>{{ company.address }}</td>
+          <td>{{ company.socialSecurityNumber }}</td>
+          <td>{{ company.pensionFundNumber }}</td>
+          <td>{{ company.taxNumber }}</td>
+          <td><img *ngIf="company.imageFile" [src]="company.imageFile" alt="Staff Image" width="50"/></td>
+          <td>
+            <div class="flex">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="editCompany(company, rowIndex)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteCompany(rowIndex)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="formDialog" [style]="{width: '500px'}" header="Company Details" [modal]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="companyForm">
+          <div class="field">
+            <label for="name">Name <span class="p-error">*</span></label>
+            <input type="text" pInputText formControlName="name" />
+            <small class="p-error" *ngIf="companyForm.controls['name'].dirty && companyForm.controls['name'].hasError('required')">Name is required.</small>
+          </div>
+          <div class="field">
+            <label for="creationDate">Creation Date <span class="p-error">*</span></label>
+            <p-calendar formControlName="creationDate" [showIcon]="true"></p-calendar>
+            <small class="p-error" *ngIf="companyForm.controls['creationDate'].dirty && companyForm.controls['creationDate'].hasError('required')">Creation Date is required.</small>
+          </div>
+          <div class="field">
+            <label for="registrationNumber">Registration Number <span class="p-error">*</span></label>
+            <input type="text" pInputText formControlName="registrationNumber" />
+            <small class="p-error" *ngIf="companyForm.controls['registrationNumber'].dirty && companyForm.controls['registrationNumber'].hasError('required')">Registration Number is required.</small>
+          </div>
+          <div class="field">
+            <label for="nationalId">National ID <span class="p-error">*</span></label>
+            <input type="text" pInputText formControlName="nationalId" />
+            <small class="p-error" *ngIf="companyForm.controls['nationalId'].dirty && companyForm.controls['nationalId'].hasError('required')">National ID is required.</small>
+          </div>
+          <div class="field">
+            <label for="phone">Phone <span class="p-error">*</span></label>
+            <input type="text" pInputText formControlName="phone" />
+            <small class="p-error" *ngIf="companyForm.controls['phone'].dirty && companyForm.controls['phone'].hasError('required')">Phone is required.</small>
+          </div>
+          <div class="field">
+            <label for="email">Email <span class="p-error">*</span></label>
+            <input type="email" pInputText formControlName="email" />
+            <small class="p-error" *ngIf="companyForm.controls['email'].dirty && companyForm.controls['email'].hasError('required')">Email is required.</small>
+          </div>
+          <div class="field">
+            <label for="city">City</label>
+            <input type="text" pInputText formControlName="city" />
+          </div>
+          <div class="field">
+            <label for="address">Address <span class="p-error">*</span></label>
+            <input type="text" pInputText formControlName="address" />
+            <small class="p-error" *ngIf="companyForm.controls['address'].dirty && companyForm.controls['address'].hasError('required')">Address is required.</small>
+          </div>
+          <div class="field">
+            <label for="socialSecurityNumber">Social Security Number <span class="p-error">*</span></label>
+            <input type="number" pInputText formControlName="socialSecurityNumber" />
+            <small class="p-error" *ngIf="companyForm.controls['socialSecurityNumber'].dirty && companyForm.controls['socialSecurityNumber'].hasError('required')">Social Security Number is required.</small>
+          </div>
+          <div class="field">
+            <label for="pensionFundNumber">Pension Fund Number <span class="p-error">*</span></label>
+            <input type="number" pInputText formControlName="pensionFundNumber" />
+            <small class="p-error" *ngIf="companyForm.controls['pensionFundNumber'].dirty && companyForm.controls['pensionFundNumber'].hasError('required')">Pension Fund Number is required.</small>
+          </div>
+          <div class="field">
+            <label for="taxNumber">Tax Number <span class="p-error">*</span></label>
+            <input type="number" pInputText formControlName="taxNumber" />
+            <small class="p-error" *ngIf="companyForm.controls['taxNumber'].dirty && companyForm.controls['taxNumber'].hasError('required')">Tax Number is required.</small>
+          </div>
+          <div class="field">
+            <label for="imageFile">Image File</label>
+            <p-fileUpload name="imageFile" url="./upload" accept="image/*"  [showUploadButton]="false" maxFileSize="10000000" (onSelect)="onImageUpload($event)"></p-fileUpload>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" (click)="onSubmitForm()" label="Save" class="p-button-primary"></button>
+        <button pButton pRipple type="button" (click)="hideFormDialog()" label="Cancel" class="p-button-secondary"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>

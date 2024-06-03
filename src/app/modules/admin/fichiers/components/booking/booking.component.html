@@ -1,0 +1,274 @@
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <button
+      pButton
+      pRipple
+      type="button"
+      (click)="openFormDialog()"
+      icon="pi pi-plus"
+      label="Add Booking"
+      class="p-button-primary mb-3"
+    ></button>
+
+    <p-table
+      [value]="bookings"
+      [paginator]="true"
+      [rows]="10"
+      [responsiveLayout]="'scroll'"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Customer</th>
+          <th>Schedule</th>
+          <th>Booking Date</th>
+          <th>Number of Seats</th>
+          <th>Seat Numbers</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-booking let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ booking.customerId }}</td>
+          <td>{{ booking.scheduleId }}</td>
+          <td>{{ booking.bookingDate | date : "shortDate" }}</td>
+          <td>{{ booking.numberOfSeats }}</td>
+          <td>{{ booking.seatNumbers.join(", ") }}</td>
+          <td>
+            <div class="flex">
+              <button
+                pButton
+                pRipple
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-primary mr-2"
+                (click)="editBooking(booking, rowIndex)"
+              ></button>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger"
+                (click)="deleteBooking(rowIndex)"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <!-- formulaire de confirmayion -->
+    <p-dialog
+    [(visible)]="formConfirmDialog"
+    [style]="{ width: '500px' }"
+    header="Confirmation Details"
+    [modal]="true"
+    class="p-fluid"
+  >
+    <ng-template pTemplate="content">
+      <form [formGroup]="bookingConfirmationForm">
+    <div *ngFor="let seat of selectedSeats; let i = index">
+      <hr>
+      <h4>Passager {{ i + 1 }}</h4>
+      <hr>
+      <div class="field mt-2">
+        <label for="name{{i}}" style="text-align: right;">Nom complet:</label>
+        <input id="name{{i}}" type="text" pInputText formControlName="name{{i}}" />
+      </div>
+      <!-- <div class="field mt-2">
+        <label for="address{{i}}" style="text-align: right;">Adresse:</label>
+        <input id="address{{i}}" type="text" pInputText formControlName="address{{i}}" />
+      </div> -->
+      <div class="field mt-2">
+        <label for="phone{{i}}" style="text-align: right;">Téléphone:</label>
+        <input id="phone{{i}}" type="text" pInputText formControlName="phone{{i}}" />
+      </div>
+      <!-- <div class="field mt-2">
+        <label for="reason{{i}}" style="text-align: right;">Motif:</label>
+        <input id="reason{{i}}" type="text" pInputText formControlName="reason{{i}}" />
+      </div> -->
+      <div class="field mt-2">
+        <label for="seatNumber{{i}}" style="text-align: right;">Numéro de Siège:</label>
+        <input id="seatNumber{{i}}" type="text" pInputText formControlName="seatNumber{{i}}" [value]="seat" readonly />
+      </div>
+    </div>
+  </form>
+</ng-template>
+<ng-template pTemplate="footer">
+  <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideConfirDialog()"></button>
+  <button pButton pRipple type="button" label="Save" icon="pi pi-check" class="p-button-primary" (click)="onSubmitForm()"></button>
+</ng-template>
+</p-dialog>
+
+<!-- client -->
+    <p-dialog
+      [(visible)]="formDialog"
+      [style]="{ width: '600px' }"
+      header="Booking Details"
+      [modal]="true"
+      class="p-fluid"
+    >
+      <ng-template pTemplate="content">
+        <form [formGroup]="bookingForm">
+          <div class="grid formgrid">
+            <div class="col-12 mb-2 lg:col-6 lg:mb-0">
+              <label for="customerId"
+                >Customer <span class="p-error">*</span></label
+              >
+              <p-dropdown
+                [options]="customers"
+                formControlName="customerId"
+                optionLabel="name"
+                optionValue="id"
+              ></p-dropdown>
+              <small
+                class="p-error"
+                *ngIf="
+                  bookingForm.controls['customerId'].dirty &&
+                  bookingForm.controls['customerId'].hasError('required')
+                "
+                >Customer is required.</small
+              >
+            </div>
+            <div class="col-12 mb-2 lg:col-6 lg:mb-0">
+              <label for="scheduleId"
+                >Schedule <span class="p-error">*</span></label
+              >
+              <p-dropdown
+                [options]="schedules"
+                formControlName="scheduleId"
+                optionLabel="description"
+                optionValue="id"
+              ></p-dropdown>
+              <small
+                class="p-error"
+                *ngIf="
+                  bookingForm.controls['scheduleId'].dirty &&
+                  bookingForm.controls['scheduleId'].hasError('required')
+                "
+                >Schedule is required.</small
+              >
+            </div>
+            <div class="col-12 mb-2 mt-2 lg:col-6 lg:mb-0">
+              <label for="bookingDate"
+                >Booking Date <span class="p-error">*</span></label
+              >
+              <p-calendar
+                formControlName="bookingDate"
+                [showIcon]="true"
+              ></p-calendar>
+              <small
+                class="p-error"
+                *ngIf="
+                  bookingForm.controls['bookingDate'].dirty &&
+                  bookingForm.controls['bookingDate'].hasError('required')
+                "
+                >Booking Date is required.</small
+              >
+            </div>
+            <div class="col-12 mb-2 mt-2 lg:col-6 lg:mb-0">
+              <label for="numberOfSeats"
+                >Number of Seats <span class="p-error">*</span></label
+              >
+              <input type="number" pInputText formControlName="numberOfSeats" />
+              <small
+                class="p-error"
+                *ngIf="
+                  bookingForm.controls['numberOfSeats'].dirty &&
+                  bookingForm.controls['numberOfSeats'].hasError('required')
+                "
+                >Number of Seats is required.</small
+              >
+            </div>
+          </div>
+          <div>
+            <div class="field mt-2">
+              <div class="legend">
+                <div>
+                  <span
+                    style="
+                      display: inline-block;
+                      width: 15px;
+                      height: 15px;
+                      background-color: #90ee90;
+                    "
+                  ></span>
+                  Available
+                </div>
+                <div>
+                  <span
+                    style="
+                      display: inline-block;
+                      width: 15px;
+                      height: 15px;
+                      background-color: #ffa07a;
+                    "
+                  ></span>
+                  Selected
+                </div>
+                <div>
+                  <span
+                    style="
+                      display: inline-block;
+                      width: 15px;
+                      height: 15px;
+                      background-color: #ff6347;
+                    "
+                  ></span>
+                  Occupied
+                </div>
+              </div>
+              <label for="seatNumbers"
+                >Seat Numbers <span class="p-error">*</span></label
+              >
+              <div class="bus-layout">
+                <div
+                  *ngFor="let seat of seatLayout"
+                  [ngClass]="{
+                    seat: true,
+                    available: seat.available,
+                    occupied: seat.occupied,
+                    selected: seat.selected
+                  }"
+                  (click)="toggleSeatSelection(seat)"
+                >
+                  {{ seat.number }}
+                </div>
+              </div>
+               <!-- Résumé de la Réservation -->
+               <div class="summary" *ngIf="selectedSeats.length > 0">
+                <h3>Résumé de la Réservation</h3>
+                <p>Sièges sélectionnés: <span id="selected-seats">{{ selectedSeats.join(', ') || 'Aucun' }}</span></p>
+                <button class="button" (click)="openConfirDialog()">Confirmer la Réservation</button>
+              </div>
+              <small
+                class="p-error"
+                *ngIf="bookingForm.controls['seatNumbers'].hasError('required')"
+                >At least one seat must be selected.</small
+              >
+            </div>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button
+          pButton
+          pRipple
+          type="button"
+          label="Cancel"
+          icon="pi pi-times"
+          class="p-button-text"
+          (click)="hideFormDialog()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          type="button"
+          label="Save"
+          icon="pi pi-check"
+          class="p-button-primary"
+          (click)="onSubmitForm()"
+        ></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>

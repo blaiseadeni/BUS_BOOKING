@@ -1,0 +1,56 @@
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <button pButton pRipple type="button" (click)="openFormDialog()" icon="pi pi-plus" label="Add Cancellation" class="p-button-primary mb-3"></button>
+
+    <p-table [value]="cancellations" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Booking</th>
+          <th>Cancellation Date</th>
+          <th>Reason</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-cancellation let-rowIndex="rowIndex">
+        <tr>
+          <td>{{  cancellation.bookingId }}</td>
+          <td>{{ cancellation.cancellationDate | date:'dd/MM/yyyy' }}</td>
+          <td>{{ cancellation.reason }}</td>
+          <td>
+            <div class="flex">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="editCancellation(cancellation, rowIndex)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteCancellation(rowIndex)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="formDialog" [style]="{width: '450px'}" header="Cancellation Details" [modal]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="cancellationForm">
+          <div class="field">
+            <label for="bookingId">Booking <span class="p-error">*</span></label>
+            <p-dropdown [options]="bookings" formControlName="bookingId" optionLabel="name" optionValue="id"></p-dropdown>
+            <small class="p-error" *ngIf="cancellationForm.controls['bookingId'].dirty && cancellationForm.controls['bookingId'].hasError('required')">Booking is required.</small>
+          </div>
+          <div class="field">
+            <label for="cancellationDate">Cancellation Date <span class="p-error">*</span></label>
+            <p-calendar formControlName="cancellationDate" showIcon="true" appendTo="body"></p-calendar>
+            <small class="p-error" *ngIf="cancellationForm.controls['cancellationDate'].dirty && cancellationForm.controls['cancellationDate'].hasError('required')">Cancellation Date is required.</small>
+          </div>
+          <div class="field">
+            <label for="reason">Reason <span class="p-error">*</span></label>
+            <textarea pInputTextarea rows="5" formControlName="reason"></textarea>
+            <small class="p-error" *ngIf="cancellationForm.controls['reason'].dirty && cancellationForm.controls['reason'].hasError('required')">Reason is required.</small>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideFormDialog()"></button>
+        <button pButton pRipple type="button" label="Save" icon="pi pi-check" class="p-button-primary" (click)="onSubmitForm()"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>

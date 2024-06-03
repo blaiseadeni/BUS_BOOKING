@@ -1,0 +1,42 @@
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <button pButton pRipple type="button" (click)="openFormDialog()" icon="pi pi-plus" label="Add Permission" class="p-button-primary mb-3"></button>
+
+    <p-table [value]="permissions" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Permission Name</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-permission let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ permission.permissionName }}</td>
+          <td>
+            <div class="flex">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="editPermission(permission)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deletePermission(permission)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="formDialog" [style]="{width: '450px'}" header="Permission Details" [modal]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="permissionForm">
+          <div class="field">
+            <label for="permissionName">Permission Name <span class="p-error">*</span></label>
+            <input id="permissionName" type="text" pInputText formControlName="permissionName" />
+            <small class="p-error" *ngIf="permissionForm.controls['permissionName'].dirty && permissionForm.controls['permissionName'].hasError('required')">Permission Name is required.</small>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideFormDialog()"></button>
+        <button pButton pRipple type="button" label="Save" icon="pi pi-check" class="p-button-primary" (click)="savePermission()"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>

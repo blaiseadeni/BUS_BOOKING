@@ -1,0 +1,70 @@
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <button pButton pRipple type="button" (click)="openFormDialog()" icon="pi pi-plus" label="Add Bus" class="p-button-primary mb-3"></button>
+
+    <p-table [value]="buses" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Agency</th>
+          <th>Bus Number</th>
+          <th>Capacity</th>
+          <th>Make</th>
+          <th>Model</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-bus let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ bus.agencyId }}</td>
+          <td>{{ bus.busNumber }}</td>
+          <td>{{ bus.capacity }}</td>
+          <td>{{ bus.make }}</td>
+          <td>{{ bus.model }}</td>
+          <td>
+            <div class="flex">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="editBus(bus, rowIndex)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteBus(rowIndex)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="formDialog" [style]="{width: '450px'}" header="Bus Details" [modal]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="busForm">
+          <div class="field">
+            <label for="agencyId">Agency <span class="p-error">*</span></label>
+            <p-dropdown [options]="agencies" formControlName="agencyId" optionLabel="name" optionValue="id"></p-dropdown>
+            <small class="p-error" *ngIf="busForm.controls['agencyId'].dirty && busForm.controls['agencyId'].hasError('required')">Agency is required.</small>
+          </div>
+          <div class="field">
+            <label for="busNumber">Bus Number <span class="p-error">*</span></label>
+            <input type="text" pInputText formControlName="busNumber" />
+            <small class="p-error" *ngIf="busForm.controls['busNumber'].dirty && busForm.controls['busNumber'].hasError('required')">Bus Number is required.</small>
+          </div>
+          <div class="field">
+            <label for="capacity">Capacity <span class="p-error">*</span></label>
+            <input type="number" pInputText formControlName="capacity" />
+            <small class="p-error" *ngIf="busForm.controls['capacity'].dirty && busForm.controls['capacity'].hasError('required')">Capacity is required and must be greater than 0.</small>
+          </div>
+          <div class="field">
+            <label for="make">Make <span class="p-error">*</span></label>
+            <input type="text" pInputText formControlName="make" />
+            <small class="p-error" *ngIf="busForm.controls['make'].dirty && busForm.controls['make'].hasError('required')">Make is required.</small>
+          </div>
+          <div class="field">
+            <label for="model">Model <span class="p-error">*</span></label>
+            <input type="text" pInputText formControlName="model" />
+            <small class="p-error" *ngIf="busForm.controls['model'].dirty && busForm.controls['model'].hasError('required')">Model is required.</small>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideFormDialog()"></button>
+        <button pButton pRipple type="button" label="Save" icon="pi pi-check" class="p-button-primary" (click)="onSubmitForm()"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>

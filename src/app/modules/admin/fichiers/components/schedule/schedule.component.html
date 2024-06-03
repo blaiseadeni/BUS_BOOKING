@@ -1,0 +1,75 @@
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <button pButton pRipple type="button" (click)="openFormDialog()" icon="pi pi-plus" label="Add Schedule" class="p-button-primary mb-3"></button>
+
+    <p-table [value]="schedules" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Bus</th>
+          <th>Route</th>
+          <th>Departure Time</th>
+          <th>Arrival Time</th>
+          <th>Driver</th>
+          <th>Conductor</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-schedule let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ schedule.busId }}</td>
+          <td>{{ schedule.routeId }}</td>
+          <td>{{ schedule.departureTime | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ schedule.arrivalTime | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ schedule.driverId|| 'N/A' }}</td>
+          <td>{{ schedule.conductorId || 'N/A' }}</td>
+          <td>
+            <div class="flex">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="editSchedule(schedule)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteSchedule(schedule)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="formDialog" [style]="{width: '450px'}" header="Schedule Details" [modal]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="scheduleForm">
+          <div class="field">
+            <label for="busId">Bus <span class="p-error">*</span></label>
+            <p-dropdown [options]="buses" formControlName="busId" optionLabel="label" optionValue="value"></p-dropdown>
+            <small class="p-error" *ngIf="scheduleForm.controls['busId'].dirty && scheduleForm.controls['busId'].hasError('required')">Bus is required.</small>
+          </div>
+          <div class="field">
+            <label for="routeId">Route <span class="p-error">*</span></label>
+            <p-dropdown [options]="routes" formControlName="routeId" optionLabel="label" optionValue="value"></p-dropdown>
+            <small class="p-error" *ngIf="scheduleForm.controls['routeId'].dirty && scheduleForm.controls['routeId'].hasError('required')">Route is required.</small>
+          </div>
+          <div class="field">
+            <label for="departureTime">Departure Time <span class="p-error">*</span></label>
+            <p-calendar formControlName="departureTime" showIcon="true" showTime="true" appendTo="body"></p-calendar>
+            <small class="p-error" *ngIf="scheduleForm.controls['departureTime'].dirty && scheduleForm.controls['departureTime'].hasError('required')">Departure Time is required.</small>
+          </div>
+          <div class="field">
+            <label for="arrivalTime">Arrival Time <span class="p-error">*</span></label>
+            <p-calendar formControlName="arrivalTime" showIcon="true" showTime="true" appendTo="body"></p-calendar>
+            <small class="p-error" *ngIf="scheduleForm.controls['arrivalTime'].dirty && scheduleForm.controls['arrivalTime'].hasError('required')">Arrival Time is required.</small>
+          </div>
+          <div class="field">
+            <label for="driverId">Driver</label>
+            <p-dropdown [options]="drivers" formControlName="driverId" optionLabel="label" optionValue="value"></p-dropdown>
+          </div>
+          <div class="field">
+            <label for="conductorId">Conductor</label>
+            <p-dropdown [options]="conductors" formControlName="conductorId" optionLabel="label" optionValue="value"></p-dropdown>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideFormDialog()"></button>
+        <button pButton pRipple type="button" label="Save" icon="pi pi-check" class="p-button-primary" (click)="saveSchedule()"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>

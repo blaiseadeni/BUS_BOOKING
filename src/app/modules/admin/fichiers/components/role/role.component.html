@@ -1,0 +1,64 @@
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <button pButton pRipple type="button" (click)="openFormDialog()" icon="pi pi-plus" label="Add Role" class="p-button-primary mb-3"></button>
+
+    <p-table [value]="roles" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Role Name</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-role let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ role.roleName }}</td>
+          <td>
+            <div class="flex">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="editRole(role)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteRole(role)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="formDialog" [style]="{width: '600px'}" header="Role Details" [modal]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="roleForm">
+          <div class="field">
+            <label for="roleName">Role Name <span class="p-error">*</span></label>
+            <input id="roleName" type="text" pInputText formControlName="roleName" />
+            <small class="p-error" *ngIf="roleForm.controls['roleName'].dirty && roleForm.controls['roleName'].hasError('required')">Role Name is required.</small>
+          </div>
+          <div class="field">
+            <label for="permissions">Permissions</label>
+            <p-table [value]="permissions" [responsiveLayout]="'scroll'">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>#</th>
+                  <th>Permission Name</th>
+                  <th>Authorize</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-permission let-i="rowIndex">
+                <tr>
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ permission.name }}</td>
+                  <td>
+                    <p-checkbox  binary="true" [(ngModel)]="permission.authorized"></p-checkbox>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideFormDialog()"></button>
+        <button pButton pRipple type="button" label="Save" icon="pi pi-check" class="p-button-primary" (click)="saveRole()"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>
+

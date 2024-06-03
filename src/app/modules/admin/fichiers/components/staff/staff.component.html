@@ -1,0 +1,71 @@
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <button pButton pRipple type="button" (click)="openFormDialog()" icon="pi pi-plus" label="Add Staff" class="p-button-primary mb-3"></button>
+
+    <p-table [value]="staffMembers" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Position</th>
+          <th>Agency</th>
+          <th>Image</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-staff let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ rowIndex+1 }}</td>
+          <td>{{ staff.firstName }}</td>
+          <td>{{ staff.lastName }}</td>
+          <td>{{ staff.position }}</td>
+          <td>{{ staff.agencyId}}</td>
+          <td><img *ngIf="staff.imageFile" [src]="staff.imageFile" alt="Staff Image" width="50"/></td>
+          <td>
+            <div class="flex">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="editStaff(staff)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteStaff(staff)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="formDialog" [style]="{width: '450px'}" header="Staff Details" [modal]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="staffForm">
+          <div class="field">
+            <label for="firstName">First Name <span class="p-error">*</span></label>
+            <input id="firstName" type="text" pInputText formControlName="firstName" />
+            <small class="p-error" *ngIf="staffForm.controls['firstName'].dirty && staffForm.controls['firstName'].hasError('required')">First Name is required.</small>
+          </div>
+          <div class="field">
+            <label for="lastName">Last Name <span class="p-error">*</span></label>
+            <input id="lastName" type="text" pInputText formControlName="lastName" />
+            <small class="p-error" *ngIf="staffForm.controls['lastName'].dirty && staffForm.controls['lastName'].hasError('required')">Last Name is required.</small>
+          </div>
+          <div class="field">
+            <label for="position">Position <span class="p-error">*</span></label>
+            <input id="position" type="text" pInputText formControlName="position" />
+            <small class="p-error" *ngIf="staffForm.controls['position'].dirty && staffForm.controls['position'].hasError('required')">Position is required.</small>
+          </div>
+          <div class="field">
+            <label for="agencyId">Agency <span class="p-error">*</span></label>
+            <p-dropdown [options]="agencies" formControlName="agencyId" optionLabel="label" optionValue="value"></p-dropdown>
+            <small class="p-error" *ngIf="staffForm.controls['agencyId'].dirty && staffForm.controls['agencyId'].hasError('required')">Agency is required.</small>
+          </div>
+          <div class="field">
+            <label for="imageFile">Image</label>
+            <p-fileUpload  name="imageFile"  [showUploadButton]="false"  accept="image/*" maxFileSize="10000000" (onSelect)="onImageUpload($event)"></p-fileUpload>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideFormDialog()"></button>
+        <button pButton pRipple type="button" label="Save" icon="pi pi-check" class="p-button-primary" (click)="saveStaff()"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>

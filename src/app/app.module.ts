@@ -1,5 +1,5 @@
 import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -90,60 +90,74 @@ import {FullCalendarModule} from '@fullcalendar/angular';
 // Application Components
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
-import {AppMainComponent} from './app.main.component';
-import {AppNotfoundComponent} from './pages/app.notfound.component';
-import {AppErrorComponent} from './pages/app.error.component';
-import {AppAccessdeniedComponent} from './pages/app.accessdenied.component';
-import {AppLoginComponent} from './pages/app.login.component';
-import {AppCrudComponent} from './pages/app.crud.component';
-import {AppCalendarComponent} from './pages/app.calendar.component';
-import {AppTimelineDemoComponent} from './pages/app.timelinedemo.component';
-import {AppMenuComponent} from './app.menu.component';
-import {AppMenuitemComponent} from './app.menuitem.component';
-import {AppBreadcrumbComponent} from './app.breadcrumb.component';
-import {AppConfigComponent} from './app.config.component';
-import {AppRightPanelComponent} from './app.rightpanel.component';
-import {AppTopBarComponent} from './app.topbar.component';
-import {AppFooterComponent} from './app.footer.component';
-
-// Demo pages
-import {DashboardDemoComponent} from './demo/view/dashboarddemo.component';
-import {FormLayoutDemoComponent} from './demo/view/formlayoutdemo.component';
-import {FloatLabelDemoComponent} from './demo/view/floatlabeldemo.component';
-import {InvalidStateDemoComponent} from './demo/view/invalidstatedemo.component';
-import {InputDemoComponent} from './demo/view/inputdemo.component';
-import {ButtonDemoComponent} from './demo/view/buttondemo.component';
-import {TableDemoComponent} from './demo/view/tabledemo.component';
-import {ListDemoComponent} from './demo/view/listdemo.component';
-import {TreeDemoComponent} from './demo/view/treedemo.component';
-import {PanelsDemoComponent} from './demo/view/panelsdemo.component';
-import {OverlaysDemoComponent} from './demo/view/overlaysdemo.component';
-import {MediaDemoComponent} from './demo/view/mediademo.component';
-import {MenusComponent} from './demo/view/menus/menus.component';
-import {MessagesDemoComponent} from './demo/view/messagesdemo.component';
-import {MiscDemoComponent} from './demo/view/miscdemo.component';
-import {EmptyDemoComponent} from './demo/view/emptydemo.component';
-import {ChartsDemoComponent} from './demo/view/chartsdemo.component';
-import {FileDemoComponent} from './demo/view/filedemo.component';
-import {DocumentationComponent} from './demo/view/documentation.component';
-import {IconsComponent} from './utilities/icons.component';
-import {BlocksComponent} from './blocks/blocks/blocks.component';
-import {BlockViewer} from './blocks/blockviewer/blockviewer.component';
-
-// Demo services
-import {CountryService} from './demo/service/countryservice';
-import {EventService} from './demo/service/eventservice';
-import {NodeService} from './demo/service/nodeservice';
-import {CustomerService} from './demo/service/customerservice';
-import {PhotoService} from './demo/service/photoservice';
-import {ProductService} from './demo/service/productservice';
-import {IconService} from './demo/service/iconservice';
-import {ConfigService} from './demo/service/app.config.service';
-
-// Application services
-import {BreadcrumbService} from './breadcrumb.service';
-import {MenuService} from './app.menu.service';
-import {AppCodeModule} from './blocks/app-code/app.code.component';
+import { AppBreadcrumbComponent } from './_primeng/app.breadcrumb.component';
+import { AppConfigComponent } from './_primeng/app.config.component';
+import { AppFooterComponent } from './_primeng/app.footer.component';
+import { AppMainComponent } from './_primeng/app.main.component';
+import { AppMenuComponent } from './_primeng/app.menu.component';
+import { MenuService } from './_primeng/app.menu.service';
+import { AppMenuitemComponent } from './_primeng/app.menuitem.component';
+import { AppRightPanelComponent } from './_primeng/app.rightpanel.component';
+import { AppTopBarComponent } from './_primeng/app.topbar.component';
+import { AppCodeModule } from './_primeng/blocks/app-code/app.code.component';
+import { BlocksComponent } from './_primeng/blocks/blocks/blocks.component';
+import { BlockViewer } from './_primeng/blocks/blockviewer/blockviewer.component';
+import { BreadcrumbService } from './_primeng/breadcrumb.service';
+import { ConfigService } from './_primeng/demo/service/app.config.service';
+import { CountryService } from './_primeng/demo/service/countryservice';
+import { CustomerService } from './_primeng/demo/service/customerservice';
+import { EventService } from './_primeng/demo/service/eventservice';
+import { IconService } from './_primeng/demo/service/iconservice';
+import { NodeService } from './_primeng/demo/service/nodeservice';
+import { PhotoService } from './_primeng/demo/service/photoservice';
+import { ProductService } from './_primeng/demo/service/productservice';
+import { ButtonDemoComponent } from './_primeng/demo/view/buttondemo.component';
+import { ChartsDemoComponent } from './_primeng/demo/view/chartsdemo.component';
+import { DashboardDemoComponent } from './_primeng/demo/view/dashboarddemo.component';
+import { DocumentationComponent } from './_primeng/demo/view/documentation.component';
+import { EmptyDemoComponent } from './_primeng/demo/view/emptydemo.component';
+import { FileDemoComponent } from './_primeng/demo/view/filedemo.component';
+import { FloatLabelDemoComponent } from './_primeng/demo/view/floatlabeldemo.component';
+import { FormLayoutDemoComponent } from './_primeng/demo/view/formlayoutdemo.component';
+import { InputDemoComponent } from './_primeng/demo/view/inputdemo.component';
+import { InvalidStateDemoComponent } from './_primeng/demo/view/invalidstatedemo.component';
+import { ListDemoComponent } from './_primeng/demo/view/listdemo.component';
+import { MediaDemoComponent } from './_primeng/demo/view/mediademo.component';
+import { MenusComponent } from './_primeng/demo/view/menus/menus.component';
+import { MessagesDemoComponent } from './_primeng/demo/view/messagesdemo.component';
+import { MiscDemoComponent } from './_primeng/demo/view/miscdemo.component';
+import { OverlaysDemoComponent } from './_primeng/demo/view/overlaysdemo.component';
+import { PanelsDemoComponent } from './_primeng/demo/view/panelsdemo.component';
+import { TableDemoComponent } from './_primeng/demo/view/tabledemo.component';
+import { TreeDemoComponent } from './_primeng/demo/view/treedemo.component';
+import { AppAccessdeniedComponent } from './_primeng/pages/app.accessdenied.component';
+import { AppCalendarComponent } from './_primeng/pages/app.calendar.component';
+import { AppCrudComponent } from './_primeng/pages/app.crud.component';
+import { AppErrorComponent } from './_primeng/pages/app.error.component';
+import { AppLoginComponent } from './_primeng/pages/app.login.component';
+import { AppNotfoundComponent } from './_primeng/pages/app.notfound.component';
+import { AppTimelineDemoComponent } from './_primeng/pages/app.timelinedemo.component';
+import { IconsComponent } from './_primeng/utilities/icons.component';
+import { CompanyComponent } from './modules/admin/fichiers/components/company/company.component';
+import { AgencyComponent } from './modules/admin/fichiers/components/agency/agency.component';
+import { BookingComponent } from './modules/admin/fichiers/components/booking/booking.component';
+import { BusComponent } from './modules/admin/fichiers/components/bus/bus.component';
+import { CancellationComponent } from './modules/admin/fichiers/components/cancellation/cancellation.component';
+import { CashRegisterComponent } from './modules/admin/fichiers/components/cash-register/cash-register.component';
+import { CustomerComponent } from './modules/admin/fichiers/components/customer/customer.component';
+import { ExpenseComponent } from './modules/admin/fichiers/components/expense/expense.component';
+import { PermissionComponent } from './modules/admin/fichiers/components/permission/permission.component';
+import { RoleComponent } from './modules/admin/fichiers/components/role/role.component';
+import { RouteComponent } from './modules/admin/fichiers/components/route/route.component';
+import { ScheduleComponent } from './modules/admin/fichiers/components/schedule/schedule.component';
+import { StaffComponent } from './modules/admin/fichiers/components/staff/staff.component';
+import { StopoverComponent } from './modules/admin/fichiers/components/stopover/stopover.component';
+import { TerminalComponent } from './modules/admin/fichiers/components/terminal/terminal.component';
+import { UserComponent } from './modules/admin/fichiers/components/user/user.component';
+import { AccountComponent } from './modules/admin/fichiers/components/account/account.component';
+import { TransactionComponent } from './modules/admin/fichiers/components/transaction/transaction.component';
+import { CashTransactionComponent } from './modules/admin/fichiers/components/cash-transaction/cash-transaction.component';
+import { InventoryComponent } from './modules/admin/fichiers/components/inventory/inventory.component';
 
 @NgModule({
     imports: [
@@ -233,6 +247,8 @@ import {AppCodeModule} from './blocks/app-code/app.code.component';
         TreeModule,
         TreeTableModule,
         VirtualScrollerModule,
+        ReactiveFormsModule,
+
     ],
     declarations: [
         AppComponent,
@@ -273,7 +289,27 @@ import {AppCodeModule} from './blocks/app-code/app.code.component';
         DocumentationComponent,
         IconsComponent,
         BlocksComponent,
-        BlockViewer
+        BlockViewer,
+        CompanyComponent,
+        AgencyComponent,
+        BookingComponent,
+        BusComponent,
+        CancellationComponent,
+        CashRegisterComponent,
+        CustomerComponent,
+        ExpenseComponent,
+        PermissionComponent,
+        RoleComponent,
+        RouteComponent,
+        ScheduleComponent,
+        StaffComponent,
+        StopoverComponent,
+        TerminalComponent,
+        UserComponent,
+        AccountComponent,
+        TransactionComponent,
+        CashTransactionComponent,
+        InventoryComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

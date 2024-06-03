@@ -1,0 +1,43 @@
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <button pButton pRipple type="button" (click)="openFormDialog()" icon="pi pi-plus" label="Add Cash Register" class="p-button-primary mb-3"></button>
+
+    <p-table [value]="cashRegisters" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Current Balance</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-cashRegister let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ cashRegister.currentBalance | currency }}</td>
+          <td>
+            <div class="flex">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="editCashRegister(cashRegister)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteCashRegister(cashRegister)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="formDialog" [style]="{width: '450px'}" header="Cash Register Details" [modal]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="cashRegisterForm">
+          <div class="field">
+            <label for="currentBalance">Current Balance <span class="p-error">*</span></label>
+            <input id="currentBalance" type="number" pInputText formControlName="currentBalance" />
+            <small class="p-error" *ngIf="cashRegisterForm.controls['currentBalance'].dirty && cashRegisterForm.controls['currentBalance'].hasError('required')">Current Balance is required.</small>
+            <small class="p-error" *ngIf="cashRegisterForm.controls['currentBalance'].dirty && cashRegisterForm.controls['currentBalance'].hasError('min')">Current Balance cannot be negative.</small>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideFormDialog()"></button>
+        <button pButton pRipple type="button" label="Save" icon="pi pi-check" class="p-button-primary" (click)="saveCashRegister()"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>

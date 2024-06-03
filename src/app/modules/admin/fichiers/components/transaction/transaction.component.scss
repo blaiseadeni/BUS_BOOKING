@@ -1,0 +1,21 @@
+/* styles.css */
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    justify-content: flex-end;
+  }
+  
+  .flex-item {
+    flex: 1 1 45%; /* Grow and shrink equally, minimum 45% width */
+    min-width: 200px; /* Ensures a minimum width */
+  }
+  
+  .flex-button {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 1rem;
+  }
+  

@@ -1,0 +1,63 @@
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <button pButton pRipple type="button" (click)="openFormDialog()" icon="pi pi-plus" label="Add Stopover" class="p-button-primary mb-3"></button>
+
+    <p-table [value]="stopovers" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Route</th>
+          <th>Location</th>
+          <th>Arrival Time</th>
+          <th>Departure Time</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-stopover let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ stopover.routeId}}</td>
+          <td>{{ stopover.location }}</td>
+          <td>{{ stopover.arrivalTime | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ stopover.departureTime | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>
+            <div class="flex">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="editStopover(stopover)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteStopover(stopover)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="formDialog" [style]="{width: '450px'}" header="Stopover Details" [modal]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="stopoverForm">
+          <div class="field">
+            <label for="routeId">Route <span class="p-error">*</span></label>
+            <p-dropdown [options]="routes" formControlName="routeId" optionLabel="label" optionValue="value"></p-dropdown>
+            <small class="p-error" *ngIf="stopoverForm.controls['routeId'].dirty && stopoverForm.controls['routeId'].hasError('required')">Route is required.</small>
+          </div>
+          <div class="field">
+            <label for="location">Location <span class="p-error">*</span></label>
+            <input id="location" type="text" pInputText formControlName="location" />
+            <small class="p-error" *ngIf="stopoverForm.controls['location'].dirty && stopoverForm.controls['location'].hasError('required')">Location is required.</small>
+          </div>
+          <div class="field">
+            <label for="arrivalTime">Arrival Time <span class="p-error">*</span></label>
+            <p-calendar formControlName="arrivalTime" showIcon="true" appendTo="body" dateFormat="dd/mm/yy" showTime="true"></p-calendar>
+            <small class="p-error" *ngIf="stopoverForm.controls['arrivalTime'].dirty && stopoverForm.controls['arrivalTime'].hasError('required')">Arrival Time is required.</small>
+          </div>
+          <div class="field">
+            <label for="departureTime">Departure Time <span class="p-error">*</span></label>
+            <p-calendar formControlName="departureTime" showIcon="true" appendTo="body" dateFormat="dd/mm/yy" showTime="true"></p-calendar>
+            <small class="p-error" *ngIf="stopoverForm.controls['departureTime'].dirty && stopoverForm.controls['departureTime'].hasError('required')">Departure Time is required.</small>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideFormDialog()"></button>
+        <button pButton pRipple type="button" label="Save" icon="pi pi-check" class="p-button-primary" (click)="saveStopover()"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>

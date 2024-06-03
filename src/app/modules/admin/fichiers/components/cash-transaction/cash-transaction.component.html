@@ -1,0 +1,108 @@
+<!-- transaction.component.html -->
+<div>
+  <form [formGroup]="dateForm">
+    <div>
+      <div class="p-field p-grid flex-container">
+        <div class="p-col-12 p-md-4 mt">
+          <div class="flex-container">
+            <div class="p-field-radiobutton">
+                <p-radioButton
+                  name="isIncome"
+                  value=""
+                  formControlName="isIncome"
+                  label="All"
+                ></p-radioButton>
+              </div>
+            <div class="p-field-radiobutton">
+              <p-radioButton
+                name="isIncome"
+                value="true"
+                formControlName="isIncome"
+                label="Income"
+              ></p-radioButton>
+            </div>
+            <div class="p-field-radiobutton">
+              <p-radioButton
+                name="isIncome"
+                value="false"
+                formControlName="isIncome"
+                label="Expense"
+              ></p-radioButton>
+            </div>
+          </div>
+        </div>
+        <label for="startDate" class="p-col-12 p-md-2">Start Date</label>
+        <div class="p-col-12 p-md-4">
+          <p-calendar
+            [showIcon]="true"
+            [showOnFocus]="false"
+            formControlName="startDate"
+            id="startDate"
+            inputId="buttondisplay"
+          />
+        </div>
+        <label for="endDate" class="p-col-12 p-md-2">End Date</label>
+        <div class="p-col-12 p-md-4">
+          <p-calendar
+            [showIcon]="true"
+            [showOnFocus]="false"
+            formControlName="endDate"
+            id="endDate"
+            inputId="buttondisplay"
+          />
+        </div>
+        <div class="p-col-12 p-md-2">
+          <button
+            pButton
+            pRipple
+            type="submit"
+            label="Filter"
+            class="p-button-primary"
+            (click)="onFilter()"
+          ></button>
+        </div>
+        <div>
+          <button
+            pButton
+            type="button"
+            label="Clear"
+            icon="pi pi-times"
+            class="p-button-danger"
+            (click)="clearDates()"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="grid mt-3">
+  <div class="col-12">
+    <div class="flex-container">
+      <h3>Total Amount: {{ totalAmount | currency }}</h3>
+    </div>
+    <p-table
+      [value]="filteredTransactions"
+      [paginator]="true"
+      [rows]="10"
+      [responsiveLayout]="'scroll'"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Transaction Date</th>
+          <th>Amount</th>
+          <th>Description</th>
+          <th>Income Type</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-transaction>
+        <tr>
+          <td>{{ transaction.transactionDate | date : "shortDate" }}</td>
+          <td>{{ transaction.amount | currency }}</td>
+          <td>{{ transaction.description }}</td>
+          <td>{{ transaction.isIncome ? "Income" : "Expense" }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

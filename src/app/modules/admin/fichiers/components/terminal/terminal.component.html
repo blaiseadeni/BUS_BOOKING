@@ -1,0 +1,49 @@
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col-12">
+    <button pButton pRipple type="button" (click)="openFormDialog()" icon="pi pi-plus" label="Add Terminal" class="p-button-primary mb-3"></button>
+
+    <p-table [value]="terminals" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Location</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-terminal let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ terminal.name }}</td>
+          <td>{{ terminal.location }}</td>
+          <td>
+            <div class="flex">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2" (click)="editTerminal(terminal)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteTerminal(terminal)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="formDialog" [style]="{width: '450px'}" header="Terminal Details" [modal]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="terminalForm">
+          <div class="field">
+            <label for="name">Name <span class="p-error">*</span></label>
+            <input id="name" type="text" pInputText formControlName="name" />
+            <small class="p-error" *ngIf="terminalForm.controls['name'].dirty && terminalForm.controls['name'].hasError('required')">Name is required.</small>
+          </div>
+          <div class="field">
+            <label for="location">Location <span class="p-error">*</span></label>
+            <input id="location" type="text" pInputText formControlName="location" />
+            <small class="p-error" *ngIf="terminalForm.controls['location'].dirty && terminalForm.controls['location'].hasError('required')">Location is required.</small>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideFormDialog()"></button>
+        <button pButton pRipple type="button" label="Save" icon="pi pi-check" class="p-button-primary" (click)="saveTerminal()"></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</div>

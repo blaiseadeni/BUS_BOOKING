@@ -7,7 +7,7 @@ import {PrimeNGConfig} from 'primeng/api';
 })
 export class AppComponent implements OnInit{
 
-    horizontalMenu: boolean;
+    horizontalMenu: boolean = true;
 
     darkMode = false;
 
